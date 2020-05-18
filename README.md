@@ -4,7 +4,7 @@ A collection of simple CLI apps to do calculations for Minecraft building.
 
 ## Installation
 
-Install with RubyGems:
+Install with [RubyGems](https://rubygems.org/gems/minecraft_utils):
 
 ```Shell
 gem install minecraft_utils

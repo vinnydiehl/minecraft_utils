@@ -12,4 +12,6 @@ Gem::Specification.new do |gem|
   gem.license = "MIT"
 
   gem.executables += ["stacks", "coords"]
+
+  gem.required_ruby_version = "~> 2.0"
 end

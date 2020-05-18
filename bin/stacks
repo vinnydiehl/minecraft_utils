@@ -1,0 +1,36 @@
+#!/usr/bin/ruby
+
+if ARGV.empty? or ["-h", "--help"].include? ARGV[0]
+  puts "Usage: stacks [-s] AMOUNT [STACK SIZE=64]"
+  puts
+  puts "  [-s] prints amount of shulker boxes to fill"
+  exit 0
+end
+
+if ARGV.include? "-s"
+  shulkers = true
+  ARGV.delete "-s"
+end
+
+unless ARGV[0].match? /^\d+$/
+  puts "Amount must be a number!"
+  exit 1
+end
+
+unless ARGV[1].nil? or ARGV[1].match? /^\d+$/
+  puts "Stack size must be a number!"
+  exit 1
+end
+
+amount = ARGV[0].to_i
+stack_size = ARGV[1].nil? ? 64 : ARGV[1].to_i
+
+stacks = (amount/stack_size).floor
+blocks = amount-(stacks*stack_size)
+
+puts "#{stacks} stacks, #{blocks} blocks"
+
+if shulkers
+  boxes = (stacks/27).floor
+  puts "#{boxes} shulkers, #{stacks-(boxes*27)} stacks, #{blocks} blocks"
+end

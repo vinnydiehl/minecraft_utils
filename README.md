@@ -29,6 +29,20 @@ $ stacks 350 16 # ender pearls/snowballs/etc.
 21 stacks, 14 blocks
 ```
 
+You can also calculate how much dye you'll need to craft all of those stained
+glass or concrete blocks. It will automatically break that number down into
+stacks if necessary:
+
+```Shell
+$ stacks 230 -d
+3 stacks, 38 blocks
+Dye needed: 29
+$ stacks -sd 2308
+36 stacks, 4 blocks
+1 shulkers, 9 stacks, 4 blocks
+Dye needed: 289 (4 stacks, 33 blocks)
+```
+
 Also contains a Nether coordinate calculator. Use an -o flag to calculate
 Overworld coordinates instead.
 

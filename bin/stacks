@@ -11,6 +11,11 @@ OptionParser.new do |opts|
   opts.on("-s", "--shulkers", "prints amount of shulker boxes to fill") do |o|
     options[:shulkers] = o
   end
+
+  opts.on("-d", "--dye",
+          "prints amount of dye needed for stained glass or concrete") do |o|
+    options[:dye] = o
+  end
 end.parse!
 
 unless ARGV[0].match? /^\d+$/
@@ -23,15 +28,29 @@ unless ARGV[1].nil? or ARGV[1].match? /^\d+$/
   exit 1
 end
 
-amount = ARGV[0].to_i
-stack_size = ARGV[1].nil? ? 64 : ARGV[1].to_i
+def calc_stacks(n, stack_size=64)
+  stacks = (n / stack_size).floor
+  return [stacks, n - (stacks * stack_size)]
+end
 
-stacks = (amount/stack_size).floor
-blocks = amount-(stacks*stack_size)
+amount = ARGV[0].to_i
+stacks, blocks = calc_stacks(amount, ARGV[1].nil? ? 64 : ARGV[1].to_i)
 
 puts "#{stacks} stacks, #{blocks} blocks"
 
 if options[:shulkers]
   boxes = (stacks / 27).floor
   puts "#{boxes} shulkers, #{stacks-(boxes * 27)} stacks, #{blocks} blocks"
+end
+
+if options[:dye]
+  dye = (amount / 8.0).ceil
+  print "Dye needed: #{dye}"
+
+  if dye > 64
+    stacks, blocks = calc_stacks dye
+    print " (#{stacks} stacks, #{blocks} blocks)"
+  end
+
+  puts
 end

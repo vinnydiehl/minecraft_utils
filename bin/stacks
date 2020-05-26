@@ -1,16 +1,17 @@
 #!/usr/bin/ruby
 
-if ARGV.empty? or ["-h", "--help"].include? ARGV[0]
-  puts "Usage: stacks [-s] AMOUNT [STACK SIZE=64]"
-  puts
-  puts "  [-s] prints amount of shulker boxes to fill"
-  exit 0
-end
+require "optparse"
 
-if ARGV.include? "-s"
-  shulkers = true
-  ARGV.delete "-s"
-end
+ARGV.push "-h" if ARGV.empty?
+
+options = {}
+OptionParser.new do |opts|
+  opts.banner = "Usage: stacks [options] AMOUNT [STACK SIZE=64]"
+
+  opts.on("-s", "--shulkers", "prints amount of shulker boxes to fill") do |o|
+    options[:shulkers] = o
+  end
+end.parse!
 
 unless ARGV[0].match? /^\d+$/
   puts "Amount must be a number!"
@@ -30,7 +31,7 @@ blocks = amount-(stacks*stack_size)
 
 puts "#{stacks} stacks, #{blocks} blocks"
 
-if shulkers
-  boxes = (stacks/27).floor
-  puts "#{boxes} shulkers, #{stacks-(boxes*27)} stacks, #{blocks} blocks"
+if options[:shulkers]
+  boxes = (stacks / 27).floor
+  puts "#{boxes} shulkers, #{stacks-(boxes * 27)} stacks, #{blocks} blocks"
 end

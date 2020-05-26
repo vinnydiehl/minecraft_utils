@@ -34,7 +34,7 @@ glass or concrete blocks. It will automatically break that number down into
 stacks if necessary:
 
 ```Shell
-$ stacks 230 -d
+$ stacks -d 230
 3 stacks, 38 blocks
 Dye needed: 29
 $ stacks -sd 2308

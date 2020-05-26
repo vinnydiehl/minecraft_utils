@@ -1,7 +1,7 @@
 Gem::Specification.new do |gem|
   gem.name = "minecraft_utils"
-  gem.version = "0.0.1"
-  gem.date = "2020-05-18"
+  gem.version = "0.1.0"
+  gem.date = "2020-05-26"
 
   gem.summary = "A simple set of calculator tools for Minecraft."
   gem.description = "Tools for calculating stacks of items and Nether coordinates."

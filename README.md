@@ -16,30 +16,30 @@ Or copy the contents of `bin` to `/usr/bin` or anywhere else on your PATH.
 ## Features
 
 Contains a calculator for how many stacks you will need for large amounts of
-items, with an option to calculate shulkers full of items as well. The second,
-optional argument changes the default stack size from 64 to whatever you want.
+items. The second, optional argument changes the default stack size from 64 to
+whatever you want.
 
 ```Shell
-$ stacks 17000
-265 stacks, 40 blocks
-$ stacks -s 17000
+$ stacks 500
+7 stacks, 52 blocks
+$ stacks 17000 # Tells you how many shulkers if the number is high enough
 265 stacks, 40 blocks
 9 shulkers, 22 stacks, 40 blocks
-$ stacks 350 16 # ender pearls/snowballs/etc.
+$ stacks 350 16 # Ender pearls/snowballs/etc.
 21 stacks, 14 blocks
 ```
 
 You can also calculate how much dye you'll need to craft all of those stained
 glass or concrete blocks. It will automatically break that number down into
-stacks if necessary:
+stacks/shulkers if necessary:
 
 ```Shell
 $ stacks -d 230
 3 stacks, 38 blocks
 Dye needed: 29
-$ stacks -sd 2308
+$ stacks -d 2308
 36 stacks, 4 blocks
-1 shulkers, 9 stacks, 4 blocks
+1 shulker, 9 stacks, 4 blocks
 Dye needed: 289 (4 stacks, 33 blocks)
 ```
 
@@ -49,7 +49,7 @@ Overworld coordinates instead.
 ```Shell
 $ coords 1800 4000
 Nether Coordinates: 225, 500
-$ coords 1800 64 4000 # it doesn't care if you put a Y value
+$ coords 1800 64 4000 # It doesn't care if you put a Y value
 Nether Coordinates: 225, 500
 $ coords -o 225 500
 Overworld Coordinates: 1800, 4000

@@ -1,6 +1,6 @@
 Gem::Specification.new do |gem|
   gem.name = "minecraft_utils"
-  gem.version = "0.1.0"
+  gem.version = "1.0.0"
   gem.date = "2020-05-26"
 
   gem.summary = "A simple set of calculator tools for Minecraft."

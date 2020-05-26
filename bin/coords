@@ -1,24 +1,25 @@
 #!/usr/bin/ruby
 
-require "optparse"
+# TODO: OptionParser is breaking negative number support.
+# Is there a better way to do this?
+if ARGV.empty? or ["-h", "--help"].include? ARGV[0]
+  puts "Usage: coords [-o] X Z"
+  puts
+  puts "  [-o] calculates nether -> overworld coordinates"
+  exit 0
+end
 
-ARGV.push "-h" if ARGV.empty?
-
-options = {}
-location = "Nether"
-OptionParser.new do |opts|
-  opts.banner = "Usage: coords [options] X Z"
-
-  opts.on("-o", "--overworld",
-          "calculates nether -> overworld coordinates") do |o|
-    options[:overworld] = o
-    location = "Overworld"
-  end
-end.parse!
+if ARGV.include? "-o"
+  overworld = true
+  location = "Overworld"
+  ARGV.delete "-o"
+else
+  location = "Nether"
+end
 
 # Try and find 2 valid numbers in the args.
 # They could run `coords 550 fuck you 700` for all I care.
-case (coords = ARGV.grep(/^\d+$/).map &:to_i).size
+case (coords = ARGV.grep(/^-?\d+$/).map &:to_i).size
 when 3
   # If they give XYZ, strip the Y
   coords -= [coords[1]]
@@ -31,7 +32,7 @@ end
 
 # Transform the coordinates
 x, z = coords.map do |c|
-  if options[:overworld]
+  if overworld
     c * 8
   else
     (c / 8.0).round

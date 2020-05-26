@@ -8,10 +8,6 @@ options = {}
 OptionParser.new do |opts|
   opts.banner = "Usage: stacks [options] AMOUNT [STACK SIZE=64]"
 
-  opts.on("-s", "--shulkers", "prints amount of shulker boxes to fill") do |o|
-    options[:shulkers] = o
-  end
-
   opts.on("-d", "--dye",
           "prints amount of dye needed for stained glass or concrete") do |o|
     options[:dye] = o
@@ -28,20 +24,49 @@ unless ARGV[1].nil? or ARGV[1].match? /^\d+$/
   exit 1
 end
 
+# Returns an array [stacks, blocks]
 def calc_stacks(n, stack_size=64)
-  stacks = (n / stack_size).floor
-  return [stacks, n - (stacks * stack_size)]
+  [stacks = (n / stack_size).floor, n - (stacks * stack_size)]
 end
 
-amount = ARGV[0].to_i
+# Get proper pluralization
+#
+#   pluralize 1, "stack" #=> "1 stack"
+#   pluralize 3, "stack" #=> "3 stacks"
+def pluralize(n, str)
+  "#{n} #{str + (n == 1 ? "" : "s")}"
+end
+
+# Create an intelligent output, i.e. don't print something like "0 blocks"
+def get_output(stacks, blocks, put_shulkers=false)
+  s = ""
+  put_stacks, put_blocks = stacks.nonzero?, blocks.nonzero?
+
+  if put_shulkers
+    s += pluralize boxes = (stacks / 27).floor, "shulker"
+
+    # Strip the necessary # of stacks off the count.
+    stacks -= boxes * 27
+    put_stacks = stacks.nonzero?
+
+    s += ", " if put_stacks or put_blocks
+  end
+
+  if put_stacks
+    s += pluralize stacks, "stack"
+    s += ", " if put_blocks
+  end
+
+  s += pluralize blocks, "block" if put_blocks
+
+  s
+end
+
+exit 0 if (amount = ARGV[0].to_i).zero?
 stacks, blocks = calc_stacks(amount, ARGV[1].nil? ? 64 : ARGV[1].to_i)
 
-puts "#{stacks} stacks, #{blocks} blocks"
-
-if options[:shulkers]
-  boxes = (stacks / 27).floor
-  puts "#{boxes} shulkers, #{stacks-(boxes * 27)} stacks, #{blocks} blocks"
-end
+puts get_output stacks, blocks
+puts get_output stacks, blocks, true if stacks >= 27
 
 if options[:dye]
   dye = (amount / 8.0).ceil
@@ -49,7 +74,7 @@ if options[:dye]
 
   if dye > 64
     stacks, blocks = calc_stacks dye
-    print " (#{stacks} stacks, #{blocks} blocks)"
+    print " (#{get_output stacks, blocks, stacks >= 27})"
   end
 
   puts
